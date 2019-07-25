@@ -29,7 +29,7 @@ let modifyEnvironment = async function(req, res){
         sendMsg.sendFail(res,101,'未找到此应用')
         return 
     }
-    let result = await DB.getDB().collection('logs').updateMany({environment: info.oldName},{$set: {environment: info.newName}})
+    let result = await DB.getDB().collection('logs').updateMany({environment: info.oldName,appId: info.appId},{$set: {environment: info.newName}})
     if(result.modifiedCount !== 0){
         sendMsg.sendSuccess(res,{})
         return
@@ -54,9 +54,10 @@ let deleteEnvironment = async function(req, res){
         return
     }
     let result = await DB.getDB().collection('logs').deleteMany({
-        environment: info.environment
+        environment: info.environment,
+        appId: info.appId
     })
-    if(result.deletedCount === 0){
+    if(result.deletedCount !== 0){
         sendMsg.sendSuccess(res,{})
     }else {
         result.sendFail(res, 102, '删除失败')

@@ -25,7 +25,7 @@ require("./db").init().then(_ => {
     app.post('/modifyAppName', applicationController.modifyAppName)
     app.get('/queryAppList', applicationController.queryAppList)
     app.post('/modifyDomainNames', applicationController.modifyDomainNames)
-
+    
     app.post('/insertLogs', logController.insertLogs)
     app.get('/queryLogs', logController.queryLogs)
 
@@ -35,10 +35,13 @@ require("./db").init().then(_ => {
     app.get('/queryEnvironment', environmentController.queryEnvironment)
 
     app.get('/queryVersion', versionController.queryVersion)
+    app.get('/switchVersion', versionController.switchVersion)
+    app.delete('/deleteVersion', versionController.deleteVersion)
+    app.post('/modifyVersion', versionController.modifyVersion)
 })
 
-app.listen(1111,()=>{
-    console.log('Listening on port 1111')
+app.listen(8080,()=>{
+    console.log('Listening on port 8080')
 })
 
 
