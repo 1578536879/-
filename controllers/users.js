@@ -12,10 +12,11 @@ let register = function(req, res){
 let login = async function(req,res){
     let info = req.query
     let users = await db.collection('users').find().toArray()
+    let flag = false
     users.forEach(element => {
         if(element.username === info.username && element.password === info.password){
             sendMessage.sendSuccess(res,{userId: element.id})
-
+            flag = true
             let sessionid = uuidv1()
             let time = new Date()
             res.cookie('sessionId',sessionid)
@@ -25,10 +26,12 @@ let login = async function(req,res){
         else if(element.username === info.username && element.password !== info.password){
             // message = '密码错误'
             // code = 101
+            flag = true
             sendMessage.sendFail(res,101,'密码错误')
+            return 
         }
     }); 
-    if(code === 0) sendMessage.sendFail(res,102,'此用户未注册')
+    sendMessage.sendFail(res,102,'此用户未注册')
 }
 
 let loginOut = function(req, res){
