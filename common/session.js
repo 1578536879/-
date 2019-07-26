@@ -1,4 +1,3 @@
-const cookieParser = require('cookie-parser')
 const DB = require('../db')
 
 let clearSessionId = function(){
@@ -19,7 +18,7 @@ let clearSessionId = function(){
 }
 
 let online = async function(sessionId){
-    let result = await DB.getDB().collection('sessionIDs').find({sessionId: sessionId}).toArray()
+    let result = await DB.getDB().collection('sessionIDs').find({sessionID: sessionId}).toArray()
     if(result.length === 0) {
         return false
     }else {
@@ -27,12 +26,19 @@ let online = async function(sessionId){
     }
 }
 
-let getCookieParser = function(){
-    return cookieParser
+let updateTime = async function(sessionId){
+    let time = new Date()
+    time = time.getTime()
+    let result = await DB.getDB().collection('sessionIDs').updateOne({
+        sessionID: sessionId
+    },{
+        $set: {time: time}
+    })
+    // console.log(123)
 }
 
 module.exports = {
     clearSessionId: clearSessionId,
     online: online,
-    getCookieParser: getCookieParser
+    updateTime: updateTime
 }

@@ -4,7 +4,8 @@ const uuidv1 = require('uuid/v1')
 const mongo = require('mongodb')
 const mongoClient = mongo.MongoClient
 const bodyParser = require('body-parser')
-let db 
+const cookieParser = require('cookie-parser')
+
 
 const session = require('./common/session')
 const userController = require("./controllers/users")
@@ -13,7 +14,8 @@ const logController = require('./controllers/logs/log')
 const environmentController = require('./controllers/logs/environment')
 const versionController = require('./controllers/logs/version')
 
-// session.clearSessionId()
+session.clearSessionId()
+app.use(cookieParser())
 require("./db").init().then(_ => {
     app.post('/register',userController.register)
     app.post('/login', userController.login)
@@ -44,7 +46,6 @@ app.listen(8080,()=>{
     console.log('Listening on port 8080')
 })
 
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 app.use(function(req, res, next) {
@@ -53,7 +54,6 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
     next();
 });
-// app.use(session.getCookieParser())
 
 
 
